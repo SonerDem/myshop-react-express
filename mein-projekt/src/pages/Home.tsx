@@ -1,9 +1,30 @@
+import ProductCard from "../components/ProductCard";
+import { products } from "../api/products";
+
 function Home() {
   return (
-    <div>
-      <h1>Willkommen in unserem Shop</h1>
-      <p>Das ist unsere Startseite.</p>
-    </div>
+    <main>
+      <section>
+        <h1>Willkommen bei MYSHOP</h1>
+
+        <p>
+          Entdecke unsere Produkte.
+        </p>
+      </section>
+
+      <section>
+        <h2>Unsere Produkte</h2>
+
+        <div>
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
 
