@@ -1,23 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Header from "../components/Header";
 
 function MainLayout() {
   return (
     <div>
-      <header>
-        <nav>
-          <Link to="/">Shop</Link>
-          <Link to="/products">Produkte</Link>
-          <Link to="/cart">Warenkorb</Link>
-          <Link to="/login">Login</Link>
-        </nav>
-      </header>
+      <Header />
 
       <main>
         <Outlet />
       </main>
 
       <footer>
-        <p>© 2026 Mein Shop</p>
+        <p>© 2026 MYSHOP</p>
       </footer>
     </div>
   );
