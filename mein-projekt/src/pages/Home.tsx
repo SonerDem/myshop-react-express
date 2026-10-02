@@ -3,8 +3,8 @@ import { products } from "../api/products";
 
 function Home() {
   return (
-    <main>
-      <section>
+    <main className="home">
+      <section className="hero">
         <h1>Willkommen bei MYSHOP</h1>
 
         <p>
@@ -12,10 +12,10 @@ function Home() {
         </p>
       </section>
 
-      <section>
+      <section className="products-section">
         <h2>Unsere Produkte</h2>
 
-        <div>
+        <div className="product-grid">
           {products.map((product) => (
             <ProductCard
               key={product.id}
