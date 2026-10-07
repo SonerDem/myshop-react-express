@@ -4,6 +4,8 @@ function Cart() {
   const items = useCartStore((state) => state.items);
   const removeItem = useCartStore((state) => state.removeItem);
   const clearCart = useCartStore((state) => state.clearCart);
+  const increaseQuantity = useCartStore((state) => state.increaseQuantity);
+  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
 
   if (items.length === 0) {
     return (
@@ -25,6 +27,8 @@ function Cart() {
           <p>
             Menge: {item.quantity}
           </p>
+          <button onClick={() => increaseQuantity(item.product.id)}>+</button>
+          <button onClick={() => decreaseQuantity(item.product.id)}>-</button>
 
           <p>
             Preis:{" "}
