@@ -9,15 +9,16 @@ function Header() {
 
   return (
     <header>
-      <div>
+      <div className="header__inner">
         <Link to="/">MYSHOP</Link>
-      </div>
+      
 
-      <nav>
+      <nav className="header__nav">
         <Link to="/">Home</Link>
         <Link to="/cart">Warenkorb({totalQuantity})</Link>
         <Link to="/login">Login</Link>
       </nav>
+      </div>
     </header>
   );
 }

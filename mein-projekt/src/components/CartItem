@@ -1,0 +1,12 @@
+import { CartItem } from "../stores/cartStore";
+
+interface CartItemProps {
+  item: CartItem;
+  onIncrease: (productId: number) => void;
+  onDecrease: (productId: number) => void;
+  onRemove: (productId: number) => void;
+}
+
+function CartItem(){
+    
+}

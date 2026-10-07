@@ -1,3 +1,40 @@
+.header {
+  border-bottom: 1px solid #ddd;
+  background: white;
+}
+
+.header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  text-decoration: none;
+}
+
+.header__nav {
+  display: flex;
+  gap: 24px;
+}
+
+.header__nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+.header__nav a:hover {
+  text-decoration: underline;
+}
+
+
 .home {
   max-width: 1200px;
   margin: 0 auto;
@@ -91,3 +128,18 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+Warenkorb
+
+Classic T-Shirt
+Menge: 2
+Preis: 59.98 €
+[Entfernen]
+
+Premium Hoodie
+Menge: 1
+Preis: 59.99 €
+[Entfernen]
+
+Gesamt: 119.97 €
+[Warenkorb leeren]
