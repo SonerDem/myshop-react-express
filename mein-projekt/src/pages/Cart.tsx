@@ -6,6 +6,8 @@ function Cart() {
   const clearCart = useCartStore((state) => state.clearCart);
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
+  const totalPrice = items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+
 
   if (items.length === 0) {
     return (
@@ -41,6 +43,7 @@ function Cart() {
           >
             Entfernen
           </button>
+          
         </div>
       ))}
 
@@ -50,6 +53,10 @@ function Cart() {
       >
         Warenkorb leeren
       </button>
+      <p>
+        Gesamt: {totalPrice.toFixed(2)} €
+      </p>
+
     </main>
   );
 }
