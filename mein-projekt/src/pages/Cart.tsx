@@ -29,10 +29,11 @@ function Cart() {
       >
         Warenkorb leeren
       </button>
-      <p>
+      <div>
+      <p className="cart-summary">
         Gesamt: {totalPrice.toFixed(2)} €
       </p>
-
+      </div>
     </main>
   );
 }

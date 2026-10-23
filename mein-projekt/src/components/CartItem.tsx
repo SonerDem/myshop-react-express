@@ -16,23 +16,24 @@ export default function CartItem({ item }: CartItemProps) {
 
   return (
     <div>
+      <div className="cart-item">
+      <img src={item.product.imageUrl} alt={item.product.name}  className="cart-item__image" />
+      <div className="cart-item__details">
       <h2>{item.product.name}</h2>
 
-      <p>Menge: {item.quantity}</p>
+      <div className="cart-item__quantity">
+      <button
+        type="button"
+        onClick={() => decreaseQuantity(item.product.id)}
+      >-</button>
+
+      <p className="cart-item__price">{item.quantity}</p>
 
       <button
         type="button"
         onClick={() => increaseQuantity(item.product.id)}
-      >
-        +
-      </button>
-
-      <button
-        type="button"
-        onClick={() => decreaseQuantity(item.product.id)}
-      >
-        -
-      </button>
+      >+</button>
+      </div>
 
       <p>
         Preis:{" "}
@@ -41,10 +42,13 @@ export default function CartItem({ item }: CartItemProps) {
 
       <button
         type="button"
+        className="cart-item__remove"
         onClick={() => removeItem(item.product.id)}
       >
         Entfernen
       </button>
+      </div>
+      </div>
     </div>
   );
 }
