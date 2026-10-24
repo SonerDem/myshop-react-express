@@ -35,7 +35,7 @@ export default function CartItem({ item }: CartItemProps) {
       >+</button>
       </div>
 
-      <p>
+      <p className="cart-summary__total">
         Preis:{" "}
         {(item.product.price * item.quantity).toFixed(2)} €
       </p>

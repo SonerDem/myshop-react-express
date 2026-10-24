@@ -34,6 +34,12 @@ function Cart() {
         Gesamt: {totalPrice.toFixed(2)} €
       </p>
       </div>
+      <button
+        type="button"
+        className="cart-summary__checkout"
+      >
+        Zur Kasse
+      </button>
     </main>
   );
 }

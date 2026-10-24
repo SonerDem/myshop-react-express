@@ -1,9 +1,12 @@
 import { useParams } from "react-router-dom";
 import { products } from "../api/products";
 import { useCartStore } from "../stores/cartStore";
+import { useState } from "react";
 
 function ProductDetail() {
   const { id } = useParams();
+  const [selectedSize, setSelectedSize] = useState<string | null>(null); 
+  const [selectedColor, setSelectedColor] = useState<string | null>(null); 
 
   const productId = Number(id);
 
@@ -35,6 +38,40 @@ function ProductDetail() {
       <p>{product.description}</p>
 
       <p>{product.price.toFixed(2)} €</p>
+
+      <select id="color" 
+        name="color" 
+        value={selectedColor || ""}
+        onChange={(e) => setSelectedColor(e.target.value)}>
+
+          <option value="" disabled>
+            Farbe auswählen
+          </option>
+
+        {product.color.map((color) => (
+          <option key={color} value={color}>
+            {color}
+          </option>
+        ))}
+      </select>
+
+      
+      <select id="size" 
+        name="size" 
+        value={selectedSize || ""}
+        onChange={(e) => setSelectedSize(e.target.value)}>
+
+          <option value="" disabled>
+            Größe auswählen
+          </option>
+
+        {product.size.map((size) => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </select>
+
 
       <button
         type="button"

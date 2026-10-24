@@ -8,6 +8,8 @@ export const products: Product[] = [
     price: 29.99,
     imageUrl: "/products/tshirt.jpg",
     category: "Clothing",
+    size: ["S", "M", "L", "XL"],
+    color: ["Red", "Blue", "Green"],
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ export const products: Product[] = [
     price: 59.99,
     imageUrl: "/products/hoodie.jpg",
     category: "Clothing",
+    size: ["S", "M", "L", "XL"],
+    color: ["Black", "Gray", "White"],
   },
   {
     id: 3,
@@ -24,5 +28,7 @@ export const products: Product[] = [
     price: 89.99,
     imageUrl: "/products/sneakers.jpg",
     category: "Shoes",
+    size: ["38", "39", "40", "41", "42", "43"],
+    color: ["White", "Black", "Gray"],
   },
 ];
