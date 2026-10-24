@@ -3,12 +3,14 @@ import type { Product } from "../types/products";
 
 export interface CartItem {
   product: Product;
+  color: string;
+  size: string;
   quantity: number;
 }
 
 interface CartStore {
   items: CartItem[];
-  addItem: (product: Product) => void;
+  addItem: (product: Product, color: string, size: string) => void;
   removeItem: (productId: number) => void;
   clearCart: () => void;
   increaseQuantity: (productId: number) => void;
@@ -47,16 +49,17 @@ export const useCartStore = create<CartStore>((set) => ({
           ),
       })),
 
-  addItem: (product) =>
+  addItem: (product, color, size) =>
     set((state) => {
       const existingItem = state.items.find(
-        (item) => item.product.id === product.id
+        (item) => (item.product.id === product.id && item.color === color && item.size === size) 
+        
       );
 
       if (existingItem) {
         return {
           items: state.items.map((item) =>
-            item.product.id === product.id
+            item.product.id === product.id && item.color === color && item.size === size
               ? {
                   ...item,
                   quantity: item.quantity + 1,
@@ -71,6 +74,8 @@ export const useCartStore = create<CartStore>((set) => ({
           ...state.items,
           {
             product,
+            color: color, 
+            size: size, 
             quantity: 1,
           },
         ],

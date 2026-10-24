@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import type { Product } from "../types/products";
-import { useCartStore } from "../stores/cartStore";
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const addItem = useCartStore((state) => state.addItem);
 
   return (
       <article className="product-card">
@@ -38,13 +36,7 @@ function ProductCard({ product }: ProductCardProps) {
         <div className="product-card__bottom">
           <span className="product-card__price">
             {product.price.toFixed(2)} €
-          </span>
-
-          <button
-            type="button"
-            onClick={() => addItem(product)}>          
-            In den Warenkorb
-          </button>
+          </span>          
         </div>
       </div>
     </article>

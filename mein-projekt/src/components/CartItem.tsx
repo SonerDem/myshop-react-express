@@ -21,6 +21,9 @@ export default function CartItem({ item }: CartItemProps) {
       <div className="cart-item__details">
       <h2>{item.product.name}</h2>
 
+      <p >Farbe: {item.color}</p>
+      <p >Größe: {item.size}</p>
+
       <div className="cart-item__quantity">
       <button
         type="button"

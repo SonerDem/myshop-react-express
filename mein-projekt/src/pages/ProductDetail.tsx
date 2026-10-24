@@ -75,7 +75,13 @@ function ProductDetail() {
 
       <button
         type="button"
-        onClick={() => addItem(product)}
+        onClick={() => {
+          if (!selectedColor || !selectedSize) {
+            alert("Bitte wählen Sie eine Farbe und Größe aus.");
+          } else {
+            addItem(product, selectedColor, selectedSize);
+          }
+        }}
       >
         In den Warenkorb
       </button>
