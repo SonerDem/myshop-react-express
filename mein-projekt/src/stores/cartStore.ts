@@ -17,8 +17,22 @@ interface CartStore {
   decreaseQuantity: (productId: number) => void;
 }
 
+const isSameItem = (
+  item: CartItem,
+  product: Product,
+  color: string,
+  size: string
+): boolean => {
+  return (
+    item.product.id === product.id &&
+    item.color === color &&
+    item.size === size
+  );
+};
+
 export const useCartStore = create<CartStore>((set) => ({
   items: [],
+  
 
   increaseQuantity: (productId) =>
     set((state) => ({
@@ -52,14 +66,14 @@ export const useCartStore = create<CartStore>((set) => ({
   addItem: (product, color, size) =>
     set((state) => {
       const existingItem = state.items.find(
-        (item) => (item.product.id === product.id && item.color === color && item.size === size) 
+        (item) => (isSameItem(item, product, color, size)) 
         
       );
 
       if (existingItem) {
         return {
           items: state.items.map((item) =>
-            item.product.id === product.id && item.color === color && item.size === size
+            isSameItem(item, product, color, size)
               ? {
                   ...item,
                   quantity: item.quantity + 1,

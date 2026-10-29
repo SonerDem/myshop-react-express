@@ -1,7 +1,22 @@
 import ProductCard from "../components/ProductCard";
-import { products } from "../api/products";
+import type { Product } from "../types/products";
+import { useState, useEffect } from "react";
 
 function Home() {
+  const [backendItems, setbackendItems] = useState<Product[]>([]);
+
+  useEffect(() => {   
+    async function fetchData() {
+      await fetch("http://localhost:3000/api/products")
+        .then((response) => response.json())
+        .then((data) => setbackendItems(data))
+        .catch((error) => console.error("Fehler beim Abrufen der Daten:", error));
+    }  
+    fetchData();          
+    }, [])
+
+
+
   return (
     <main className="home">
       <section className="hero">
@@ -16,10 +31,10 @@ function Home() {
         <h2>Unsere Produkte</h2>
 
         <div className="product-grid">
-          {products.map((product) => (
+          {backendItems.map((item) => (
             <ProductCard
-              key={product.id}
-              product={product}
+              key={item.id}
+              product={item}
             />
           ))}
         </div>
