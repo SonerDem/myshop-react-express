@@ -4,9 +4,15 @@ import cors from "cors";
 import { PrismaClient } from "./generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 const app = express();
 const PORT = 3000;
+const sessionSecret = process.env.SESSION_SECRET;
+
+if (!sessionSecret) {
+  throw new Error("SESSION_SECRET fehlt in der .env-Datei.");
+}
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,});
 
@@ -15,6 +21,19 @@ const prisma = new PrismaClient({ adapter });
 app.use(cors());
 
 app.use(express.json());
+
+// Für die lokale Entwicklung werden Sessions im Arbeitsspeicher gespeichert.
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 1000 * 60 * 60 * 24,
+  },
+}));
 
 app.post("/api/login", async (req, res) => {
   
