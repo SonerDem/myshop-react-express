@@ -6,6 +6,13 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcrypt";
 import session from "express-session";
 
+// Sagt TypeScript, welche Daten wir in der Session speichern.
+declare module "express-session" {
+  interface SessionData {
+    userId: number;
+  }
+}
+
 const app = express();
 const PORT = 3000;
 const sessionSecret = process.env.SESSION_SECRET;
@@ -47,6 +54,9 @@ app.post("/api/login", async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ error: "Ungültige E-Mail oder Passwort." });
     }
+    // Ab hier gilt der Benutzer als eingeloggt: Die Session merkt sich seine ID.
+    req.session.userId = user.id;
+
     res.status(200).json({ message: "Login erfolgreich.",
        user: {id: user.id, 
        name: user.name, 
