@@ -5,6 +5,7 @@ import { PrismaClient } from "./generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 
 // Sagt TypeScript, welche Daten wir in der Session speichern.
 declare module "express-session" {
@@ -16,21 +17,33 @@ declare module "express-session" {
 const app = express();
 const PORT = 3000;
 const sessionSecret = process.env.SESSION_SECRET;
+const databaseUrl = process.env.DATABASE_URL;
 
 if (!sessionSecret) {
   throw new Error("SESSION_SECRET fehlt in der .env-Datei.");
 }
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL fehlt in der .env-Datei.");
+}
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,});
+  connectionString: databaseUrl,});
 
 const prisma = new PrismaClient({ adapter });
+const PgSessionStore = connectPgSimple(session);
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
 app.use(express.json());
 
-// Für die lokale Entwicklung werden Sessions im Arbeitsspeicher gespeichert.
+// Sessions werden in PostgreSQL gespeichert und überstehen Serverneustarts.
 app.use(session({
+  store: new PgSessionStore({
+    conString: databaseUrl,
+    createTableIfMissing: true,
+  }),
   secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
@@ -68,6 +81,49 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+
+app.post("/api/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error("Fehler beim Logout:", error);
+      return res.status(500).json({ error: "Abmelden fehlgeschlagen." });
+    }
+
+    res.clearCookie("connect.sid", {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+    return res.sendStatus(204);
+  });
+});
+
+// Gibt den Benutzer zurück, der zur aktuellen Session gehört.
+app.get("/api/me", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  const userId = req.session.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Nicht eingeloggt." });
+  }
+
+  try {
+    const user = await prisma.benutzer.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true },
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: "Nicht eingeloggt." });
+    }
+
+    return res.json({ user });
+  } catch (error) {
+    console.error("Fehler beim Laden des angemeldeten Benutzers:", error);
+    return res.status(500).json({ error: "Benutzer konnte nicht geladen werden." });
+  }
+});
 
 app.post("/api/register", async (req, res) => {
   try{

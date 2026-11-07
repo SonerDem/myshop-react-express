@@ -1,4 +1,6 @@
 import { useState} from "react";
+import { Link } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
 
 function Register() {
   const [name, setName] = useState("");
@@ -6,9 +8,11 @@ function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();    
+    event.preventDefault();
+    setSubmitting(true);
     try {
       const response = await fetch("http://localhost:3000/api/register", {
         method: "POST",
@@ -29,14 +33,14 @@ function Register() {
       console.error("Fehler bei der Registrierung:", error);
       setSuccess("");
       setError("Fehler bei der Registrierung.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
   return (
-    <div>
-      <h1>Registrieren</h1>
-
-      <form onSubmit={handleSubmit}>
+    <AuthLayout title="Konto erstellen." description="Registriere dich mit deinem Namen und deiner E-Mail-Adresse.">
+      <form className="auth-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>
           <input value={name}
@@ -44,6 +48,8 @@ function Register() {
             type="text"
             id="name"
             name="name"
+            autoComplete="name"
+            required
           />
         </div>
 
@@ -54,6 +60,8 @@ function Register() {
             type="email"                                                
             id="email"
             name="email"
+            autoComplete="email"
+            required
           />
         </div>
 
@@ -64,15 +72,18 @@ function Register() {
             type="password"
             id="password"
             name="password"
+            autoComplete="new-password"
+            required
           />
         </div>      
 
-        <button type="submit">Registrieren</button>
+        <button className="button" type="submit" disabled={submitting}>{submitting ? "Konto wird erstellt…" : "Registrieren"}</button>
 
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
+        {error && <p className="notice error" role="alert">{error}</p>}
+        {success && <p className="notice success" role="status">{success} <Link to="/login">Jetzt anmelden</Link></p>}
       </form>
-    </div>
+      <p className="auth-switch">Schon ein Konto? <Link to="/login">Anmelden</Link></p>
+    </AuthLayout>
   );
 }
 
