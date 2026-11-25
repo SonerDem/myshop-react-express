@@ -1,0 +1,39 @@
+# Abhängigkeiten (werden mit "npm install" wiederhergestellt)
+node_modules/
+
+# Umgebungsvariablen mit echten Zugangsdaten
+.env
+.env.*
+# Ausnahme: die Vorlage mit Platzhaltern gehört ins Repo
+!.env.example
+
+# Build-Ergebnisse
+dist/
+build/
+
+# Logdateien
+logs/
+*.log
+
+# Betriebssystem-Dateien
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Versehentlich im Hauptordner installiert (Frontend und Server haben eigene package.json)
+/package.json
+/package-lock.json
+
+# Anleitungen für KI-Tools, gehören nicht zum Projektcode
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
+
+# Unbenutzte Bilder (können lokal gelöscht werden)
+mein-projekt/public/422182.png
+mein-projekt/src/img/
+mein-projekt/src/assets/hero.png
+mein-projekt/src/assets/react.svg
+mein-projekt/src/assets/vite.svg
+mein-projekt/public/icons.svg
