@@ -32,7 +32,7 @@ const prisma = new PrismaClient({ adapter });
 const PgSessionStore = connectPgSimple(session);
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://localhost:4173"],
   credentials: true,
 }));
 
@@ -55,10 +55,17 @@ app.use(session({
   },
 }));
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 app.post("/api/login", async (req, res) => {
-  
+  const { email, password } = req.body ?? {};
+  if (!isNonEmptyString(email) || !isNonEmptyString(password)) {
+    return res.status(400).json({ error: "Bitte E-Mail und Passwort eingeben." });
+  }
+
   try {
-    const { email, password } = req.body;
     const user = await prisma.benutzer.findUnique({ where: { email } });
     if (!user) {
       return res.status(401).json({ error: "Ungültige E-Mail oder Passwort." });
@@ -126,13 +133,12 @@ app.get("/api/me", async (req, res) => {
 });
 
 app.post("/api/register", async (req, res) => {
+  const { name, email, password } = req.body ?? {};
+  if (!isNonEmptyString(name) || !isNonEmptyString(email) || !isNonEmptyString(password)) {
+    return res.status(400).json({ error: "Bitte Name, E-Mail und Passwort eingeben." });
+  }
+
   try{
-    const daten = req.body;       
-    const {name, password, email} = daten;
-    if (!name || !email || !password) {
-      console.log("Einträge fehlen")
-     return res.status(400).json({ error: "Einträge fehlen" });
-    }    
     const hashedpw = await bcrypt.hash(password, 10);
     const gleicheEmail = await prisma.benutzer.findUnique({where:{email},});
     if (gleicheEmail){
